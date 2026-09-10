@@ -1,0 +1,9 @@
+{
+  "name": "strategy-stack-skills",
+  "displayName": "Strategy Skills",
+  "version": "0.1.0",
+  "description": "Framework-based strategic analysis for companies and careers: field understanding, Porter's Five Forces, Business Model Canvas, Helmer's 7 Powers, and two end-to-end orchestrators.",
+  "author": { "name": "Teacher" },
+  "license": "MIT",
+  "keywords": ["strategy", "porter", "7-powers", "business-model-canvas", "career"]
+}
