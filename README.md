@@ -105,12 +105,20 @@ long prompts.
 git clone https://github.com/qiyanjun/strategy-stack-skills.git
 ```
 
-```
-/plugin marketplace add ./strategy-stack-skills
+```bash
+claude plugin marketplace add ./strategy-stack-skills
+claude plugin install strategy-stack-skills@strategy-stack-skills
 ```
 
-Skills are discovered automatically. Invoke as `/company-deep-dive` or namespaced as
-`/strategy-stack-skills:company-deep-dive`.
+(Equivalently, from inside an interactive session: `/plugin marketplace add
+./strategy-stack-skills` then `/plugin install strategy-stack-skills@strategy-stack-skills`.)
+
+Both steps are required — adding the marketplace only registers it; the plugin still
+needs an explicit install before its skills are discovered. Once installed, invoke as
+`/company-deep-dive` or namespaced as `/strategy-stack-skills:company-deep-dive`.
+Verify with `claude plugin list` (should show `strategy-stack-skills@strategy-stack-skills`,
+enabled) or `claude plugin details strategy-stack-skills@strategy-stack-skills` for its
+full component inventory and token-cost estimate.
 
 ### As individual skills
 
@@ -144,7 +152,8 @@ correct output contains, so they double as readable regression tests.
 
 ```
 strategy-stack-skills/
-├── .claude-plugin/plugin.json      # manifest — only `name` is required
+├── .claude-plugin/plugin.json      # plugin manifest — only `name` is required
+├── .claude-plugin/marketplace.json # makes `claude plugin marketplace add` work
 ├── skills/                         # one folder per skill, each with SKILL.md
 ├── examples/                       # worked demos, one per track
 ├── docs/PUBLIC_SKILL_COMPARISON.md # how each skill compares to public counterparts
@@ -154,8 +163,10 @@ strategy-stack-skills/
 └── LICENSE
 ```
 
-`.claude-plugin/` holds **only** `plugin.json`. Everything else lives at the repo root —
-skills placed inside `.claude-plugin/` are not discovered.
+`.claude-plugin/` holds **only manifests** — `plugin.json` (required) and
+`marketplace.json` (present because this repo doubles as a one-plugin marketplace, so
+`claude plugin marketplace add` has something to find). Everything else lives at the
+repo root — skills placed inside `.claude-plugin/` are not discovered.
 
 ---
 
@@ -184,6 +195,18 @@ a distinction that markdown already conveys.
 exactly. The plugin name also sets the namespaced-invocation prefix
 (`/strategy-stack-skills:company-deep-dive`), so letting it drift from the repo name
 creates two names for the same thing — confusing to install and to cite.
+
+### This repo doubles as its own marketplace
+
+`.claude-plugin/marketplace.json` lists this repo's single plugin with `"source": "./"`.
+This isn't in the official plugin-layout docs cited above — it was found by actually
+running `claude plugin marketplace add ./strategy-stack-skills` against a repo that had
+only `plugin.json`, which failed with `Marketplace file not found`. The CLI's
+`marketplace add` command requires a marketplace manifest even for a single-plugin repo;
+a plugin manifest alone isn't enough to make that command work, regardless of what the
+docs imply. Verified end-to-end: `marketplace add` → `claude plugin install
+strategy-stack-skills@strategy-stack-skills` → `claude plugin list` shows it installed
+and enabled with all 9 skills in its component inventory.
 
 ### Support skills are reused, not reinvented
 

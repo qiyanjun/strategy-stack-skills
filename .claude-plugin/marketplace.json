@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "strategy-stack-skills",
+  "description": "Framework-based strategic analysis for companies and careers, packaged as a Claude plugin.",
+  "owner": { "name": "Teacher" },
+  "plugins": [
+    {
+      "name": "strategy-stack-skills",
+      "description": "Framework-based strategic analysis for companies and careers: field understanding, Porter's Five Forces, Business Model Canvas, Helmer's 7 Powers, and two end-to-end orchestrators.",
+      "author": { "name": "Teacher" },
+      "source": "./"
+    }
+  ]
+}
