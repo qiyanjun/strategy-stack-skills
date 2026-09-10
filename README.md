@@ -9,17 +9,94 @@ that fails the build when a skill references a sibling that no longer exists.
 
 ---
 
+## What this helps with
+
+Strategic analysis is usually either a slide deck built by hand, or a chat with an LLM
+that produces confident-sounding output ungrounded in any real facts about the market or
+the company. This plugin is for the people who'd rather have the second option done
+properly: founders and PMs deciding whether to enter a market or build a feature,
+operators sizing up a competitor's moat, and individuals evaluating a job change or
+figuring out what makes them hard to replace.
+
+Concretely, it can:
+
+- Tell you whether a market is structurally attractive and whether a specific product or
+  feature has a durable moat, against named competitors — not a generic SWOT list
+- Map how a company actually makes money, block by block, and stress-test whether the
+  pieces are coherent
+- Run the same two analyses on a career instead of a company — what you offer, to whom,
+  and whether that's defensible or commoditized
+- Turn any of the above into a phased roadmap where every initiative traces back to a
+  specific finding, not a guess
+
+It's needed because the failure mode above is the default one, and it shows up the same
+way in all three frameworks: ask a model to "apply Porter's Five Forces" cold and you get
+force ratings that could describe almost any market, because nothing grounds it in this
+market's actual value chain or names this market's actual rivals. Ask for a 7 Powers
+assessment without named competitors and you get a list of strengths, not a moat argument
+— a Power only means something relative to a specific rival. Ask for a Business Model
+Canvas and you get nine plausible-sounding boxes with no check that they're actually
+consistent with each other. See [Why it is built this way](#why-it-is-built-this-way) for
+how this plugin closes each of those gaps.
+
+---
+
+## Try it
+
+Two worked demos, one per track — each lists the phase chain and a checklist of what a
+correct output contains, so they double as readable regression tests.
+
+- [`examples/business/`](examples/business/) — full company analysis
+- [`examples/personal-career/`](examples/personal-career/) — the career mirror
+
+---
+
+## The books behind the frameworks
+
+None of the frameworks here are original — the contribution is the dependency
+enforcement and the tooling around them, not the strategy theory itself. Each skill is a
+faithful implementation of a specific published framework:
+
+| Framework | Book | Used by |
+|---|---|---|
+| Five Forces | Michael E. Porter, *Competitive Strategy: Techniques for Analyzing Industries and Competitors* (1980) | `ai-product-forces-and-powers` |
+| 7 Powers | Hamilton Helmer, *7 Powers: The Foundations of Business Strategy* (2016) | `ai-product-forces-and-powers`, `personal-power-analysis` |
+| Business Model Canvas | Alexander Osterwalder & Yves Pigneur, *Business Model Generation* (2010) | `business-model-canvas`, `business-model-you` |
+
+Two implementation choices worth knowing about going in:
+
+- **7 Powers is comparative, not abstract.** Helmer defines a Power as a condition that
+  lets a business earn persistent differential returns, and a Power claim only means
+  something next to a named rival. `ai-product-forces-and-powers` and
+  `personal-power-analysis` both require 2–3 named competitor products (or peers) as
+  comparison foils — a strength with no named foil is graded as commodity, not a Power.
+- **The Canvas is a mirror, not a fixed template.** `business-model-you` is Tim Clark's
+  adaptation of Osterwalder & Pigneur's original nine blocks to a single person's career
+  (their book, *Business Model You*, builds on the same canvas) — same nine blocks, "you"
+  as the business being modeled instead of a firm.
+
+`field-understanding`, the shared first phase both orchestrators run before any of the
+above, isn't drawn from one of these three books — it's an original seven-lens briefing
+format built for this plugin, described further in
+[`docs/PUBLIC_SKILL_COMPARISON.md`](docs/PUBLIC_SKILL_COMPARISON.md).
+
+---
+
 ## Why it is built this way
 
 Most strategy prompting fails the same way: a framework gets applied without the facts it
 needs. Porter's Five Forces done without knowing the value chain produces force ratings
 that could describe any market. Helmer's 7 Powers assessed against "competitors" in the
-abstract produces a list of strengths, not a moat analysis.
+abstract produces a list of strengths, not a moat analysis. A Business Model Canvas filled
+in block by block, with nothing checking the blocks against each other, produces nine
+plausible answers that don't add up to one coherent business.
 
-This plugin fixes that with **enforced dependency order**. Field understanding runs first
-and emits eight named outputs; every Porter force must cite at least one of them. The 7
-Powers analysis must name specific competitor products as comparison foils. The roadmap
-must trace every initiative back to a force or a power finding. Skip a step and the
+This plugin fixes that with **enforced dependency order and a coherence check**. Field
+understanding runs first and emits eight named outputs; every Porter force must cite at
+least one of them. The 7 Powers analysis must name specific competitor products as
+comparison foils. The Business Model Canvas ends with an explicit coherence-check step —
+strengths, weaknesses, and risks read off the completed canvas, not assumed going in. The
+roadmap must trace every initiative back to a force or a power finding. Skip a step and the
 downstream analysis has nothing to stand on — so the orchestrators don't let you.
 
 ---
@@ -135,16 +212,6 @@ validator to see what a given skill depends on.
 ### Requirements
 Python 3 for the validator only. The skills themselves need no dependencies; web search
 improves them substantially but is not required.
-
----
-
-## Try it
-
-Two worked demos, one per track — each lists the phase chain and a checklist of what a
-correct output contains, so they double as readable regression tests.
-
-- [`examples/business/`](examples/business/) — full company analysis
-- [`examples/personal-career/`](examples/personal-career/) — the career mirror
 
 ---
 
