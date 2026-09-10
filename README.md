@@ -1,4 +1,4 @@
-# Strategy Skills
+# Strategy Stack Skills
 
 Framework-based strategic analysis for **companies** and **careers**, packaged as a
 Claude plugin.
@@ -13,31 +13,41 @@ that fails the build when a skill references a sibling that no longer exists.
 
 Strategic analysis is usually either a slide deck built by hand, or a chat with an LLM
 that produces confident-sounding output ungrounded in any real facts about the market or
-the company. This plugin is for the people who'd rather have the second option done
-properly: founders and PMs deciding whether to enter a market or build a feature,
-operators sizing up a competitor's moat, and individuals evaluating a job change or
-figuring out what makes them hard to replace.
+the company. This plugin is for people who want the second option done properly.
 
-Concretely, it can:
+**Who it's for**
 
-- Tell you whether a market is structurally attractive and whether a specific product or
+- Founders and PMs deciding whether to enter a market or build a feature
+- Operators sizing up a competitor's moat
+- Individuals evaluating a job change or figuring out what makes them hard to replace
+
+**What it does**
+
+- Tells you whether a market is structurally attractive and whether a specific product or
   feature has a durable moat, against named competitors — not a generic SWOT list
-- Map how a company actually makes money, block by block, and stress-test whether the
+- Maps how a company actually makes money, block by block, and stress-tests whether the
   pieces are coherent
-- Run the same two analyses on a career instead of a company — what you offer, to whom,
+- Runs the same two analyses on a career instead of a company — what you offer, to whom,
   and whether that's defensible or commoditized
-- Turn any of the above into a phased roadmap where every initiative traces back to a
+- Turns any of the above into a phased roadmap where every initiative traces back to a
   specific finding, not a guess
 
-It's needed because the failure mode above is the default one, and it shows up the same
-way in all three frameworks: ask a model to "apply Porter's Five Forces" cold and you get
-force ratings that could describe almost any market, because nothing grounds it in this
-market's actual value chain or names this market's actual rivals. Ask for a 7 Powers
-assessment without named competitors and you get a list of strengths, not a moat argument
-— a Power only means something relative to a specific rival. Ask for a Business Model
-Canvas and you get nine plausible-sounding boxes with no check that they're actually
-consistent with each other. See [Why it is built this way](#why-it-is-built-this-way) for
-how this plugin closes each of those gaps.
+**Why it's needed**
+
+The failure mode above is the default one, and it shows up the same way in all three
+frameworks this plugin implements:
+
+- Porter's Five Forces applied cold produces force ratings generic enough to describe
+  almost any market, because nothing grounds it in this market's actual value chain or
+  names this market's actual rivals
+- A 7 Powers assessment without named competitors produces a list of strengths, not a
+  moat argument — a Power only means something relative to a specific rival
+- A Business Model Canvas filled in block by block, with nothing checking the blocks
+  against each other, produces nine plausible-sounding boxes that don't add up to one
+  coherent business
+
+See [Why it is built this way](#why-it-is-built-this-way) for how this plugin closes each
+of those gaps.
 
 ---
 
