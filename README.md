@@ -219,6 +219,22 @@ If you copy a skill that calls siblings — the orchestrators, `business-model-c
 `personal-power-analysis` — copy those too, or its references will not resolve. Run the
 validator to see what a given skill depends on.
 
+### As a Codex skill
+
+Codex (OpenAI's CLI agent) discovers skills under `.agents/skills/`, not `skills/`. This
+repo ships `.agents/skills` as a symlink to `skills/`, so cloning the repo and running
+`codex` from its root picks up all nine skills with no copying — one source of truth,
+two discovery paths.
+
+The five skills with no sibling references — `field-understanding`,
+`business-model-canvas`, `business-model-you`, `sl`, `grill-me` — work as-is under Codex.
+The orchestrators (`company-deep-dive`, `personal-career-deep-dive`) and the two skills
+that call siblings (`ai-product-forces-and-powers`, `personal-power-analysis`) still use
+`${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`, a Claude Code plugin variable Codex does
+not resolve — Codex's own docs don't yet define an equivalent path variable or sibling-skill
+invocation mechanism. Until that's rewritten, invoke those four directly under Codex only
+if you're prepared for the sibling reference to silently fail to resolve.
+
 ### Requirements
 Python 3 for the validator only. The skills themselves need no dependencies; web search
 improves them substantially but is not required.
