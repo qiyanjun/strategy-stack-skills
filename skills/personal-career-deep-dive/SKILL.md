@@ -211,7 +211,7 @@ Then produce the plan, following `business-model-you` Step 4's structure:
 **Citations in files must be real links.** Never write `<cite index="...">` citation markup into a file. That markup only resolves inside the chat interface, where it is matched against search results in context; written to a document it becomes inert text with nothing to resolve against, and it survives conversion to .docx or .pdf as visible junk. In files, cite with ordinary markdown links — `[the claim text](https://url)` — and close the document with a numbered **Sources** list mapping each externally-sourced claim to its URL. Chat responses use citation markup normally; files never do.
 
 
-Length makes this a file. Write to `/mnt/user-data/outputs/[name]-career-deep-dive.md`, present it, then give a tight summary in chat (5–8 sentences: the verdict, the binding constraint, the first move).
+Length makes this a file. If `/mnt/user-data/outputs/` exists (the claude.ai convention), write `[name]-career-deep-dive.md` there and present it. In any other environment (Claude Code, Codex, etc.), ask the user where to save the file before writing it — do not assume a path silently. If asking isn't practical, default to the current working directory, name the file `[name]-career-deep-dive.md`, and state the exact path you used. Either way, follow the write with a tight summary in chat (5–8 sentences: the verdict, the binding constraint, the first move).
 
 ```
 # [Name] — Career Deep Dive
