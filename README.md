@@ -219,12 +219,40 @@ If you copy a skill that calls siblings — the orchestrators, `business-model-c
 `personal-power-analysis` — copy those too, or its references will not resolve. Run the
 validator to see what a given skill depends on.
 
-### As a Codex skill
+### As a Codex plugin
 
-Codex (OpenAI's CLI agent) discovers skills under `.agents/skills/`, not `skills/`. This
+```bash
+git clone https://github.com/qiyanjun/strategy-stack-skills.git
+```
+
+```bash
+codex plugin marketplace add ./strategy-stack-skills
+codex plugin add strategy-stack-skills@strategy-stack-skills
+```
+
+Codex's own plugin CLI (`codex plugin marketplace add` / `codex plugin add`) reads this
+repo's existing `.claude-plugin/marketplace.json` and `.claude-plugin/plugin.json`
+directly — no Codex-specific manifest needed. Verified end-to-end on `codex-cli 0.154.0`:
+`marketplace add` registers the repo, `plugin add` installs it, `codex plugin list` shows
+`strategy-stack-skills@strategy-stack-skills` as `installed, enabled`, and its cache copy
+includes all nine skills under `skills/`. This isn't documented by OpenAI as a supported
+cross-tool path — it works because Codex's plugin loader defaults to a `./skills/` folder
+when a manifest doesn't declare one explicitly (the convention official Codex plugins use
+via their own `.codex-plugin/plugin.json`), and it happens to also accept a marketplace
+manifest under `.claude-plugin/`. Treat it as convenient, not guaranteed to keep working
+across Codex releases.
+
+Verify with `codex plugin list` (look for `strategy-stack-skills@strategy-stack-skills`,
+`installed, enabled`).
+
+### As Codex skills, without installing
+
+Codex also discovers skills under `.agents/skills/` with no plugin system involved. This
 repo ships `.agents/skills` as a symlink to `skills/`, so cloning the repo and running
 `codex` from its root picks up all nine skills with no copying — one source of truth,
-two discovery paths.
+two discovery paths. Use this if you'd rather not register a marketplace at all.
+
+### Sibling references under either Codex path
 
 Five skills have no sibling references — `field-understanding`, `business-model-you`,
 `ai-product-forces-and-powers`, `sl`, `grill-me` — and work as-is under Codex. The other
@@ -233,12 +261,11 @@ four (`company-deep-dive`, `personal-career-deep-dive`, `business-model-canvas`,
 a Claude Code plugin variable Codex does not set. Each of those four now carries an
 explicit fallback instruction near its sibling references: when `${CLAUDE_PLUGIN_ROOT}`
 is unset, resolve the reference as `<name>/SKILL.md` in the directory next to the current
-skill's own directory — true under both discovery paths, since `.agents/skills` is a
-symlink to `skills/` and the sibling layout is identical either way. This is a
-plain-language instruction to the model, not a shell substitution, so it depends on the
-model actually reading and following it — the validator can't check that a host followed
-prose, only that the underlying `<name>` still resolves to a real skill in this repo
-(check 5).
+skill's own directory — true under both Codex paths above, since the sibling layout under
+`skills/` is identical either way. This is a plain-language instruction to the model, not
+a shell substitution, so it depends on the model actually reading and following it — the
+validator can't check that a host followed prose, only that the underlying `<name>` still
+resolves to a real skill in this repo (check 5).
 
 ### Requirements
 Python 3 for the validator only. The skills themselves need no dependencies; web search
