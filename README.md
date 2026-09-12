@@ -439,6 +439,15 @@ Two more rules that fall out of the same logic:
    failure mode in a cluster this size
 4. `python3 tests/validate_skills.py`
 5. If the skill belongs in a pipeline, add its phase to the calling orchestrator
+6. Bump `version` in `.claude-plugin/plugin.json` (see note below)
+
+**Bump the version on every change, not just new skills.** `claude plugin update` compares
+`.claude-plugin/plugin.json`'s `version` field — if it hasn't changed, `update` reports
+"already at the latest version" and leaves the installed cache untouched, even though the
+directory source has new commits. For a plugin installed from a local directory (this
+repo's own recommended install path) that's the only update mechanism available; skipping
+the bump means anyone with it installed silently keeps stale content until they uninstall
+and reinstall.
 
 ### Renaming a skill
 
