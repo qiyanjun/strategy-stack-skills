@@ -11,6 +11,8 @@ This skill runs a complete company analysis by sequencing several frameworks so 
 
 Skills are not callable functions. Naming a skill does nothing. At each phase below you MUST `view` the referenced SKILL.md and follow its instructions. Skipping the read means improvising a framework from memory — which produces analysis that looks structured but is generic, and is the main failure mode of this pipeline. If a path does not resolve, say so explicitly in the output rather than silently substituting your own version.
 
+**Running under Codex or another host with no `${CLAUDE_PLUGIN_ROOT}`:** that variable is a Claude Code plugin convention and won't be set. Resolve any `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md` reference below as `<name>/SKILL.md` in the directory next to this skill's own directory instead.
+
 ---
 
 ## Why this order (dependency logic)

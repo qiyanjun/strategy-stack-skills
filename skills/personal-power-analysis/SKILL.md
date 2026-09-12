@@ -201,6 +201,8 @@ Keep it dense. Markdown in chat; a file if long or if the person wants to keep i
 
 ## Composing with other skills
 
+**Running under Codex or another host with no `${CLAUDE_PLUGIN_ROOT}`:** that variable is a Claude Code plugin convention and won't be set. Resolve any `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md` reference below as `<name>/SKILL.md` in the directory next to this skill's own directory instead.
+
 | When | Compose with |
 |---|---|
 | The career model itself needs mapping first | `view ${CLAUDE_PLUGIN_ROOT}/skills/business-model-you/SKILL.md` — BMY describes how value is created; this skill tests whether it's defensible. Natural sequence: BMY → this |

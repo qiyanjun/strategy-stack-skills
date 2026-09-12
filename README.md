@@ -226,14 +226,19 @@ repo ships `.agents/skills` as a symlink to `skills/`, so cloning the repo and r
 `codex` from its root picks up all nine skills with no copying — one source of truth,
 two discovery paths.
 
-The five skills with no sibling references — `field-understanding`,
-`business-model-canvas`, `business-model-you`, `sl`, `grill-me` — work as-is under Codex.
-The orchestrators (`company-deep-dive`, `personal-career-deep-dive`) and the two skills
-that call siblings (`ai-product-forces-and-powers`, `personal-power-analysis`) still use
-`${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`, a Claude Code plugin variable Codex does
-not resolve — Codex's own docs don't yet define an equivalent path variable or sibling-skill
-invocation mechanism. Until that's rewritten, invoke those four directly under Codex only
-if you're prepared for the sibling reference to silently fail to resolve.
+Five skills have no sibling references — `field-understanding`, `business-model-you`,
+`ai-product-forces-and-powers`, `sl`, `grill-me` — and work as-is under Codex. The other
+four (`company-deep-dive`, `personal-career-deep-dive`, `business-model-canvas`,
+`personal-power-analysis`) chain to siblings via `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`,
+a Claude Code plugin variable Codex does not set. Each of those four now carries an
+explicit fallback instruction near its sibling references: when `${CLAUDE_PLUGIN_ROOT}`
+is unset, resolve the reference as `<name>/SKILL.md` in the directory next to the current
+skill's own directory — true under both discovery paths, since `.agents/skills` is a
+symlink to `skills/` and the sibling layout is identical either way. This is a
+plain-language instruction to the model, not a shell substitution, so it depends on the
+model actually reading and following it — the validator can't check that a host followed
+prose, only that the underlying `<name>` still resolves to a real skill in this repo
+(check 5).
 
 ### Requirements
 Python 3 for the validator only. The skills themselves need no dependencies; web search

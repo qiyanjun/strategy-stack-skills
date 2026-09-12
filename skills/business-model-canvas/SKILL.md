@@ -82,6 +82,8 @@ The canvas describes the model; other frameworks test and extend it.
 
 **How composition actually works — this is a required mechanic, not a suggestion.** Skills are not callable functions. Naming a skill does nothing on its own. To compose, you MUST `view` the other skill's SKILL.md at the path below and follow its instructions. If you skip that read, you are improvising the framework from memory, which defeats the purpose of composing.
 
+**Running under Codex or another host with no `${CLAUDE_PLUGIN_ROOT}`:** that variable is a Claude Code plugin convention and won't be set. Resolve any `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md` reference below as `<name>/SKILL.md` in the directory next to this skill's own directory instead.
+
 Compose when the trigger fits; don't run all of them by default — either the trigger clearly applies, or briefly offer the extension after delivering the core canvas.
 
 | When | Compose with | Division of labor |

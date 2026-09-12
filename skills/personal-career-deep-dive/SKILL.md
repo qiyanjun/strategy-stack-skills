@@ -13,6 +13,8 @@ This is the personal counterpart to `company-deep-dive`, with the same dependenc
 
 Skills are not callable functions. Naming a skill does nothing. At each phase you MUST `view` the referenced SKILL.md and follow it. Skipping the read means improvising a framework from memory — which yields output that looks structured but is generic. If a path fails to resolve, say so explicitly rather than silently substituting your own version.
 
+**Running under Codex or another host with no `${CLAUDE_PLUGIN_ROOT}`:** that variable is a Claude Code plugin convention and won't be set. Resolve any `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md` reference below as `<name>/SKILL.md` in the directory next to this skill's own directory instead.
+
 **When a phase's analysis already exists earlier in the session**, you may carry it forward instead of re-deriving it — but state explicitly what was carried and from where, and re-verify anything later phases depend on. Do not silently compress a phase to a summary; a reader cannot tell the difference between a phase that was run and one that was skipped, and neither can you on review.
 
 ---
